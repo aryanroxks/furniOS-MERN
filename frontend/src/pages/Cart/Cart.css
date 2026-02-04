@@ -1,0 +1,85 @@
+@reference "tailwindcss";
+
+
+.p-6{
+    @apply text-center ;
+}
+.cart-wrapper {
+  @apply max-w-[90%] mx-auto py-12 grid gap-12;
+}
+
+/* LEFT */
+.cart-left {
+  @apply col-span-2;
+}
+
+.cart-title {
+  @apply text-2xl font-medium mb-6;
+}
+
+/* HEADER */
+.cart-header {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr 1fr;
+  @apply text-sm text-gray-500 border-b pb-3;
+}
+
+/* ROW */
+.cart-row {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr 1fr;
+  @apply items-center border-b py-6 text-sm;
+}
+
+/* PRODUCT */
+.product-cell {
+  @apply flex items-start gap-4;
+}
+
+.product-cell img {
+  @apply w-20 h-24 object-cover;
+}
+
+.product-text {
+  @apply flex items-center h-24;
+}
+
+.product-text span {
+  @apply font-medium;
+}
+
+.remove-btn {
+  @apply text-xl text-gray-400 hover:text-black;
+}
+
+/* QTY */
+.qty-input {
+  @apply w-14 border text-center py-1;
+}
+
+/* RIGHT */
+.cart-right {
+  @apply border p-6 h-fit;
+}
+
+.summary {
+  @apply space-y-4 text-sm;
+}
+
+.summary-row {
+  @apply flex justify-between border-b pb-4;
+}
+
+.summary-row.column {
+  @apply flex-col gap-2 border-b pb-4;
+}
+
+.summary-row.total {
+  @apply font-semibold text-base;
+}
+
+.checkout-btn {
+  @apply w-full bg-black text-white py-3 mt-4 cursor-pointer;
+}
+
+

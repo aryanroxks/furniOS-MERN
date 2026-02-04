@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+/* CARD */
+.product-card {
+  @apply bg-white border rounded-xl overflow-hidden
+         transition-all duration-300
+         hover:shadow-lg hover:-translate-y-1;
+}
+
+/* IMAGE WRAPPER */
+.product-image {
+  @apply relative bg-[#f7f7f7] flex items-center justify-center cursor-pointer;
+  height: 240px;
+}
+
+/* IMAGE */
+.product-image img {
+  @apply max-h-[85%] max-w-[85%] object-contain
+         transition-transform duration-300;
+}
+
+.product-card:hover .product-image img {
+  @apply scale-105;
+}
+
+/* WISHLIST */
+.wishlist-btn {
+  @apply absolute top-3 right-3 bg-white p-2 rounded-full
+         shadow border transition hover:scale-110;
+}
+
+.heart {
+  @apply text-gray-500;
+}
+
+.heart-active {
+  @apply fill-red-500 text-red-500;
+}
+
+/* BODY */
+.product-body {
+  @apply p-4 space-y-2;
+}
+
+.product-title {
+  @apply text-sm font-medium text-gray-800 line-clamp-2;
+}
+
+.price {
+  @apply text-xl font-semibold text-black;
+}
+
+/* CART BUTTON */
+.add-cart-btn {
+  @apply mt-3 w-full rounded-lg border border-black
+         py-2 text-sm font-medium
+         transition-all duration-200
+         hover:bg-black hover:text-white;
+}
+
+.add-cart-btn.added {
+  @apply bg-black text-white cursor-default;
+}
+
+/* OFFER PRICE */
+.original-price {
+  @apply text-sm text-gray-400 line-through ml-2;
+}
+
+.offer-badge {
+  @apply text-xs font-semibold text-green-600 mt-1 inline-block;
+}

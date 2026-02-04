@@ -1,0 +1,161 @@
+@reference "tailwindcss";
+
+/* =========================
+   PAGE & LAYOUT
+========================= */
+
+.checkout-page {
+  @apply min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 
+         flex justify-center items-start py-16;
+}
+
+.checkout-container {
+  @apply max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 
+         gap-14 px-6;
+}
+
+/* =========================
+   LEFT PANEL
+========================= */
+
+.checkout-left {
+  @apply bg-white p-10 rounded-2xl shadow-md;
+}
+
+.checkout-title {
+  @apply text-3xl font-semibold mb-8 tracking-tight;
+}
+
+.section-title {
+  @apply font-medium text-lg mb-5;
+}
+
+.delivery-options {
+  @apply flex gap-5 mb-8;
+}
+
+.option {
+  @apply flex items-center gap-2 border rounded-xl 
+         px-6 py-3 cursor-pointer text-base
+         transition-all duration-200;
+}
+
+.option:hover {
+  @apply bg-gray-50;
+}
+
+.option.active {
+  @apply border-blue-600 bg-blue-50 text-blue-700;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form-group {
+  @apply mb-6;
+}
+
+.form-group label {
+  @apply block text-sm font-medium mb-2 text-gray-700;
+}
+
+.form-group input {
+  @apply w-full border rounded-xl px-4 py-3 text-base
+         bg-gray-50
+         focus:bg-white
+         focus:outline-none
+         focus:ring-2 focus:ring-blue-500
+         transition;
+}
+
+.grid-3 {
+  @apply grid grid-cols-1 md:grid-cols-3 gap-5;
+}
+
+.terms {
+  @apply flex items-start gap-3 text-sm mt-6 text-gray-600;
+}
+
+/* =========================
+   RIGHT PANEL
+========================= */
+
+.checkout-right {
+  @apply bg-white p-10 rounded-2xl shadow-md h-fit;
+}
+
+.review-title {
+  @apply text-xl font-semibold mb-7;
+}
+
+/* =========================
+   CART ITEMS
+========================= */
+
+.cart-item {
+  @apply flex items-center justify-between mb-6;
+}
+
+.cart-item img {
+  @apply rounded-xl w-16 h-16 object-cover;
+}
+
+.item-name {
+  @apply text-base font-medium;
+}
+
+.item-qty {
+  @apply text-sm text-gray-500;
+}
+
+/* =========================
+   DISCOUNT
+========================= */
+
+.discount-box {
+  @apply flex gap-3 my-6;
+}
+
+.discount-box input {
+  @apply flex-1 border rounded-xl px-4 py-3 text-base
+         bg-gray-50 focus:bg-white
+         focus:ring-2 focus:ring-blue-500;
+}
+
+.discount-box button {
+  @apply bg-blue-600 text-white px-6 rounded-xl text-base
+         hover:bg-blue-700 transition;
+}
+
+/* =========================
+   PRICE SUMMARY
+========================= */
+
+.price-summary {
+  @apply text-base space-y-3 border-t pt-6 mt-6;
+}
+
+.price-summary div {
+  @apply flex justify-between text-gray-700;
+}
+
+.price-summary .total {
+  @apply font-semibold text-lg text-gray-900;
+}
+
+/* =========================
+   PAY BUTTON
+========================= */
+
+.pay-btn {
+  @apply w-full bg-blue-600 text-white py-4 rounded-xl mt-8
+         text-lg font-medium
+         hover:bg-blue-700
+         active:scale-[0.99]
+         transition;
+}
+
+.secure-text {
+  @apply text-sm text-gray-500 mt-5 flex items-center justify-center gap-2;
+}

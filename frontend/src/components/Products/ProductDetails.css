@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+/* ================= WRAPPER ================= */
+.pdp-wrapper {
+  @apply max-w-[90%] mx-auto px-8 py-12 grid grid-cols-1 md:grid-cols-2 gap-16;
+}
+
+/* ================= LEFT SIDE ================= */
+.pdp-images-wrapper {
+  @apply flex flex-col gap-8;
+}
+
+.pdp-images {
+  @apply flex gap-6;
+}
+
+.thumbnail-column {
+  @apply flex flex-col gap-3;
+}
+
+.thumbnail {
+  @apply w-16 aspect-[4/5] object-contain border rounded cursor-pointer bg-white;
+}
+
+
+.thumbnail.active {
+  @apply border-black;
+}
+
+.main-image {
+  @apply relative bg-[#f6f8f4] rounded-xl w-full;
+  aspect-ratio: 4 / 5;
+}
+
+
+.main-media {
+  @apply w-full h-full object-contain;
+}
+
+
+.badge {
+  @apply absolute top-4 left-4 text-xs bg-white px-3 py-1 rounded-full font-medium;
+}
+
+/* ================= FEATURES ================= */
+.features-box {
+  @apply border-t pt-6;
+}
+
+.section-title {
+  @apply text-lg font-semibold uppercase tracking-wide mb-4;
+}
+
+.features-list {
+  @apply space-y-3 text-base text-gray-700;
+}
+
+.features-list li {
+  @apply flex justify-between max-w-[80%];
+}
+
+.features-list li strong {
+  @apply font-medium text-gray-900 capitalize;
+}
+
+/* ================= DESCRIPTION ================= */
+.left-description {
+  @apply border-t pt-6;
+}
+
+.description-toggle {
+  @apply w-full flex justify-between items-center font-semibold cursor-pointer text-xl;
+}
+
+.description-toggle span {
+  @apply text-2xl font-light;
+}
+
+.description {
+  @apply mt-4 text-base text-gray-700 leading-relaxed max-w-[95%];
+}
+
+/* ================= RIGHT SIDE ================= */
+.pdp-details {
+  @apply bg-white rounded-2xl p-10 space-y-8 shadow-sm;
+}
+
+/* TITLE */
+.title {
+  @apply text-4xl font-serif leading-tight;
+}
+
+/* PRICE */
+.price-row {
+  @apply flex items-center gap-3;
+}
+
+.price {
+  @apply text-3xl font-semibold;
+}
+
+/* DIVIDER */
+.pdp-details::after {
+  content: "";
+  @apply block h-px bg-gray-200 my-6;
+}
+
+/* ================= CART ================= */
+.cart-row {
+  @apply flex items-center gap-5 mt-2;
+}
+
+/* QUANTITY */
+.qty {
+  @apply flex items-center border rounded-lg overflow-hidden h-12;
+}
+
+.qty button {
+  @apply w-12 h-full text-xl flex items-center justify-center hover:bg-gray-100 disabled:opacity-40;
+}
+
+.qty input {
+  @apply w-14 text-center outline-none text-base;
+}
+
+/* ADD TO CART */
+.add-cart {
+  @apply flex-1 bg-black text-white py-3 rounded-full text-sm font-semibold tracking-wide hover:bg-gray-900;
+}
+
+/* WISHLIST */
+.wishlist {
+  @apply w-12 h-12 border rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-100;
+}
+
+/* ================= PLACE ORDER ================= */
+.place-order {
+  @apply w-full bg-[#3f2c4f] text-white py-4 rounded-full text-lg font-semibold tracking-wide hover:opacity-95;
+}
+
+/* OFFER PRICE */
+.original-price {
+  @apply text-sm text-gray-400 line-through ml-2;
+}
+
+.offer-badge {
+  @apply text-xs font-semibold text-green-600 mt-1 inline-block;
+}
