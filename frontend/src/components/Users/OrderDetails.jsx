@@ -94,6 +94,11 @@ export default function OrderDetails() {
     }
   };
 
+    const downloadInvoice = () => {
+    const invoiceUrl = `${import.meta.env.VITE_API_BASE_URL}/orders/${orderId}/invoice`;
+    window.open(invoiceUrl, "_blank", "noopener,noreferrer");
+  };
+
 
   /* ---------------- STATES ---------------- */
 
@@ -234,6 +239,13 @@ export default function OrderDetails() {
             )}
           </div>
         )}
+
+                <button
+          onClick={downloadInvoice}
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          Download Invoice
+        </button>
 
       </div>
 

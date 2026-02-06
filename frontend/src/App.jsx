@@ -44,7 +44,6 @@ import APayments from "./pages/admin/APayments";
 import AReport from "./pages/admin/AReport";
 import AFeedback from "./pages/admin/AFeedback";
 import ANotifications from "./pages/admin/ANotifications";
-import AInquiries from "./pages/admin/AInquiries";
 import ACompanydetail from "./pages/admin/ACompanydetail";
 import { BadgeTurkishLiraIcon } from "lucide-react";
 import AdminGuard from "./pages/admin/AdminGuard.jsx";
@@ -111,6 +110,21 @@ import WholesaleCheckout from "./pages/Wholesale Customer/WholesaleCheckout.jsx"
 import AdminWholesaleQuotations from "./pages/admin/Wholesale/AdminWholesaleQuotations.jsx";
 import AdminQuotationDetails from "./pages/admin/Wholesale/AdminQuotationDetails.jsx";
 
+
+import InquiryCloud from "./pages/Inquiries/InquiryCloud.jsx";
+import InquiryForm from "./pages/Inquiries/InquiryForm.jsx";
+import MyInquiriesMini from "./pages/Inquiries/MyInquiriesMini.jsx";
+import AdminInquiries from "./pages/admin/Inquiries/AdminInquiries.jsx";
+import AdminInquiryDetails from "./pages/admin/Inquiries/AdminInquiryDetails.jsx";
+
+import AdminFeedbackDetails from "./pages/admin/Feedbacks/AdminFeedbackDetails.jsx";
+import AdminFeedbacks from "./pages/admin/Feedbacks/AdminFeedbacks.jsx";
+import MyNotifications from "./pages/MyNotifications.jsx";
+import AdminNotifications from "./pages/admin/Notifications/AdminNotifications.jsx";
+import CreateNotification from "./pages/admin/Notifications/CreateNotification.jsx";
+
+
+
 // Sidebar pages
 const Projects = () => <h1>Projects Page</h1>;
 const Messages = () => <h1>Messages Page</h1>;
@@ -139,10 +153,12 @@ export default function App() {
         {/* Protected Routes */}
 
         <Route element={<AuthGuard />}>
+
           <Route path="/checkout" element={<><Navbar /><Checkout /><Footer /></>} />
           <Route path="/wholesale/checkout/:quotationID" element={<><Navbar /><WholesaleCheckout /><Footer /></>} />
           <Route path="/payment" element={<><Navbar /><Payment /><Footer /></>} />
           <Route path="/order-success" element={<><Navbar /><OrderSuccess /><Footer /></>} />
+          <Route path="/notifications" element={<><Navbar /><MyNotifications /><Footer /></>} />
           <Route path="/profile" element={<><Navbar /><Profile /><Footer /></>}>
             <Route index element={<AccountInfo />} />
             <Route path="addresses" element={<Addresses />} />
@@ -156,7 +172,10 @@ export default function App() {
 
           </Route>
            <Route path="/quotations/create" element={<QuotationCreate />}/>
+           <Route path="/inquiries/new" element={<InquiryForm />} />
+           <Route path="/inquiries/my" element={<MyInquiriesMini />} />
 
+      {/* View my inquiries (full page fallback) */}
 
           {/* <Route path="/payment/:orderId" element={<Payment />} /> */}
         </Route>
@@ -252,10 +271,15 @@ export default function App() {
             <Route path="areport" element={<AReport />} />
 
 
-            <Route path="afeedback" element={<AFeedback />} />
-            <Route path="anotifications" element={<ANotifications />} />
-            <Route path="ainquiries" element={<AInquiries />} />
+            <Route path="feedbacks" element={<AdminFeedbacks />} />
+            <Route path="feedbacks/:feedbackId" element={<AdminFeedbackDetails />} />
 
+            <Route path="notifications" element={<AdminNotifications />} />
+            <Route path="notifications/create" element={<CreateNotification />} />
+
+            <Route path="inquiries" element={<AdminInquiries />} />
+            <Route path="inquiries/:inquiryId" element={<AdminInquiryDetails />} />
+            
 
             <Route path="acompany-details" element={<ACompanydetail />} />
           </Route>

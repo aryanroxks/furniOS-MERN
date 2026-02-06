@@ -64,6 +64,16 @@ export default function ViewPurchase() {
     }
   };
 
+
+  //pdf
+  const handleDownloadInvoice = () => {
+    const invoiceUrl = `${import.meta.env.VITE_API_BASE_URL}/purchases/${id}/invoice`;
+    window.open(invoiceUrl, "_blank", "noopener,noreferrer");
+  };
+
+
+
+
   if (loading) return <div className="p-6">Loading...</div>;
   if (!purchase) return null;
 
@@ -143,30 +153,43 @@ export default function ViewPurchase() {
       </div>
 
       {/* Actions */}
-      {purchase.status === "PENDING" && (
-        <div className="flex gap-3">
-          <button
-            onClick={() => navigate(`/dashboard/purchases/${id}/edit`)}
-            className="border px-5 py-2 rounded-md"
-          >
-            Edit
-          </button>
+      {/* Actions */}
+      <div className="flex gap-3">
+        {purchase.status === "PENDING" && (
+          <>
+            <button
+              onClick={() => navigate(`/dashboard/purchases/${id}/edit`)}
+              className="border px-5 py-2 rounded-md"
+            >
+              Edit
+            </button>
 
-          <button
-            onClick={() => setReceiveOpen(true)}
-            className="bg-green-600 text-white px-5 py-2 rounded-md"
-          >
-            Receive
-          </button>
+            <button
+              onClick={() => setReceiveOpen(true)}
+              className="bg-green-600 text-white px-5 py-2 rounded-md"
+            >
+              Receive
+            </button>
 
+            <button
+              onClick={() => setCancelOpen(true)}
+              className="bg-red-600 text-white px-5 py-2 rounded-md"
+            >
+              Cancel
+            </button>
+          </>
+        )}
+
+        {purchase.status === "RECEIVED" && (
           <button
-            onClick={() => setCancelOpen(true)}
-            className="bg-red-600 text-white px-5 py-2 rounded-md"
+            onClick={handleDownloadInvoice}
+            className="bg-blue-600 text-white px-5 py-2 rounded-md"
           >
-            Cancel
+            Download Invoice
           </button>
-        </div>
-      )}
+        )}
+      </div>
+
 
       {/* Receive Modal */}
       {receiveOpen && (

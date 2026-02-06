@@ -11,6 +11,19 @@ export default function ProductDetails() {
 
 
   /* ================= STATES ================= */
+  /* ================= FEEDBACK STATES ================= */
+  const [ratingSummary, setRatingSummary] = useState(null);
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [myFeedbackExists, setMyFeedbackExists] = useState(false);
+  const [myFeedback, setMyFeedback] = useState(null);
+  const [editingFeedback, setEditingFeedback] = useState(false);
+
+  const [rating, setRating] = useState(0);
+  const [description, setDescription] = useState("");
+  const [feedbackLoading, setFeedbackLoading] = useState(false);
+  const [feedbackError, setFeedbackError] = useState("");
+
+
   const [product, setProduct] = useState(null);
   const [qty, setQty] = useState(1);
 
@@ -39,6 +52,125 @@ export default function ProductDetails() {
 
     fetchProduct();
   }, [id]);
+
+  /* ================= FETCH FEEDBACKS ================= */
+  useEffect(() => {
+    if (!product?._id) return;
+
+    const fetchFeedbacks = async () => {
+      try {
+        const [summaryRes, feedbackRes] = await Promise.all([
+          api.get(`/feedbacks/product/${product._id}/summary`),
+          api.get(`/feedbacks/product/${product._id}`),
+        ]);
+
+        setRatingSummary(summaryRes.data.data);
+        setFeedbacks(feedbackRes.data.data || []);
+      } catch (err) {
+        console.error("Feedback fetch failed", err);
+      }
+    };
+
+    fetchFeedbacks();
+  }, [product?._id]);
+
+  useEffect(() => {
+    const fetchMyFeedback = async () => {
+      try {
+        const res = await api.get("/feedbacks/my");
+        const feedback = res.data.data.find(
+          (f) => f.productID?._id === product._id
+        );
+
+        if (feedback) {
+          setMyFeedback(feedback);
+          setMyFeedbackExists(true);
+          setRating(feedback.rating);
+          setDescription(feedback.description || "");
+        }
+      } catch {
+        setMyFeedback(null);
+        setMyFeedbackExists(false);
+      }
+    };
+
+    if (product?._id) fetchMyFeedback();
+  }, [product?._id]);
+
+
+  const handleSubmitFeedback = async () => {
+    if (!rating) return;
+
+    setFeedbackLoading(true);
+    setFeedbackError("");
+
+    try {
+      if (editingFeedback && myFeedback) {
+        // ✏️ UPDATE
+        const res = await api.patch(
+          `/feedbacks/my/${myFeedback._id}`,
+          { rating, description }
+        );
+
+        setMyFeedback(res.data.data);
+        setEditingFeedback(false);
+      } else {
+        // ➕ CREATE
+        const res = await api.post(`/feedbacks/${product._id}`, {
+          rating,
+          description,
+        });
+
+        setMyFeedback(res.data.data);
+        setMyFeedbackExists(true);
+      }
+
+      // Refresh list
+      const listRes = await api.get(`/feedbacks/product/${product._id}`);
+      setFeedbacks(listRes.data.data || []);
+    } catch (err) {
+      if (err.response?.status === 409) {
+        setFeedbackError("You already submitted feedback.");
+      } else if (err.response?.status === 401) {
+        redirectToLoginWithIntent({
+          type: "ADD_FEEDBACK",
+          productId: product._id,
+        });
+      } else {
+        setFeedbackError("Failed to save feedback");
+      }
+    } finally {
+      setFeedbackLoading(false);
+    }
+  };
+
+  const handleDeleteFeedback = async () => {
+    if (!myFeedback) return;
+
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete your feedback?"
+    );
+    if (!confirmDelete) return;
+
+    try {
+      await api.delete(`/feedbacks/my/${myFeedback._id}`);
+
+      setMyFeedback(null);
+      setMyFeedbackExists(false);
+      setEditingFeedback(false);
+      setRating(0);
+      setDescription("");
+
+      const res = await api.get(`/feedbacks/product/${product._id}`);
+      setFeedbacks(res.data.data || []);
+    } catch (err) {
+      console.error("Delete feedback failed", err);
+    }
+  };
+
+
+
+
 
   /* ================= SET DEFAULT MEDIA ================= */
   useEffect(() => {
@@ -405,6 +537,133 @@ export default function ProductDetails() {
           PLACE ORDER
         </button>
 
+        {/* ================= FEEDBACK SECTION ================= */}
+        <div className="feedback-box">
+          <h3 className="section-title">Ratings & Reviews</h3>
+
+          {/* SUMMARY */}
+          {ratingSummary && (
+            <div className="rating-summary">
+              <div className="avg-rating">
+                ⭐ {ratingSummary.averageRating} / 5
+              </div>
+              <p>
+                {ratingSummary.totalReviews} reviews ·{" "}
+                {ratingSummary.verifiedReviews} verified
+              </p>
+            </div>
+          )}
+
+          {/* FEEDBACK LIST */}
+          <div className="feedback-list">
+            {feedbacks.length === 0 && (
+              <p className="muted">No reviews yet</p>
+            )}
+
+            {feedbacks.slice(0, 3).map((f) => (
+              <div key={f._id} className="feedback-item">
+                <div className="feedback-header">
+                  <strong>{f.userID?.username}</strong>
+                  <span>{"⭐".repeat(f.rating)}</span>
+                </div>
+
+                {f.isVerifiedPurchase && (
+                  <span className="verified">✔ Verified Purchase</span>
+                )}
+
+                {f.description && (
+                  <p className="feedback-text">{f.description}</p>
+                )}
+
+                {/* ✅ ADMIN REPLY */}
+                {f.adminReply && (
+                  <div className="admin-reply">
+                    <strong className="admin-label">Admin Response</strong>
+                    <p className="admin-reply-text">
+                      {f.adminReply}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+            ))}
+          </div>
+
+          {/* ADD FEEDBACK */}
+          {/* ADD / EDIT FEEDBACK */}
+          <div className="add-feedback">
+            <h4>
+              {myFeedback ? "Your Review" : "Write a Review"}
+            </h4>
+
+            <div className="stars">
+              {[1, 2, 3, 4, 5].map((n) => (
+                <span
+                  key={n}
+                  className={n <= rating ? "star active" : "star"}
+                  onClick={() => editingFeedback || !myFeedback ? setRating(n) : null}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+
+            {(editingFeedback || !myFeedback) && (
+              <textarea
+                placeholder="Share your experience (optional)"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                maxLength={1000}
+              />
+            )}
+
+            {feedbackError && <p className="error">{feedbackError}</p>}
+
+            <div className="feedback-actions">
+              {!myFeedback && (
+                <button
+                  onClick={handleSubmitFeedback}
+                  disabled={feedbackLoading || !rating}
+                >
+                  Submit
+                </button>
+              )}
+
+              {myFeedback && !editingFeedback && (
+                <>
+                  <button onClick={() => setEditingFeedback(true)}>
+                    Edit
+                  </button>
+                  <button className="danger" onClick={handleDeleteFeedback}>
+                    Delete
+                  </button>
+                </>
+              )}
+
+              {editingFeedback && (
+                <>
+                  <button
+                    onClick={handleSubmitFeedback}
+                    disabled={feedbackLoading || !rating}
+                  >
+                    Save
+                  </button>
+                  <button
+                    className="muted"
+                    onClick={() => {
+                      setEditingFeedback(false);
+                      setRating(myFeedback.rating);
+                      setDescription(myFeedback.description || "");
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+
+        </div>
 
       </div>
     </div>

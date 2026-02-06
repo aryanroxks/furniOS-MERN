@@ -1,6 +1,7 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { useEffect , useState} from "react";
 import api from "../services/api";
+import InquiryCloud from "./Inquiries/InquiryCloud.jsx";
 export default function Profile() {
 
   const [isWholesaleUser, setIsWholesaleUser] = useState(false);
@@ -95,6 +96,8 @@ export default function Profile() {
           <Outlet />
         </div>
       </div>
+       <InquiryCloud /> 
+
     </div>
   );
 }

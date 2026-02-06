@@ -146,3 +146,94 @@
 .offer-badge {
   @apply text-xs font-semibold text-green-600 mt-1 inline-block;
 }
+
+
+.feedback-box {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+.rating-summary {
+  margin-bottom: 12px;
+}
+
+.avg-rating {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.feedback-item {
+  margin-bottom: 12px;
+}
+
+.feedback-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.verified {
+  font-size: 12px;
+  color: green;
+}
+
+.add-feedback textarea {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px;
+  resize: none;
+}
+
+.stars {
+  cursor: pointer;
+}
+
+.star {
+  font-size: 22px;
+  color: #ccc;
+}
+
+.star.active {
+  color: gold;
+}
+
+.error {
+  color: red;
+  font-size: 13px;
+}
+
+
+.feedback-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.feedback-actions .danger {
+  color: red;
+}
+
+.feedback-actions .muted {
+  opacity: 0.6;
+}
+
+
+.admin-reply {
+  margin-top: 10px;
+  padding: 10px 12px;
+  background-color: #f8f9fb;
+  border-left: 4px solid #4f46e5;
+  border-radius: 4px;
+}
+
+.admin-label {
+  display: block;
+  font-size: 13px;
+  color: #4f46e5;
+  margin-bottom: 4px;
+}
+
+.admin-reply-text {
+  font-size: 14px;
+  color: #444;
+}

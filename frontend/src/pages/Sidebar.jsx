@@ -87,7 +87,7 @@ export default function Sidebar() {
       title: "Communication",
       icon: MessageCircle,
       children: [
-        { label: "Feedback & Ratings", path: "/dashboard/feedback" },
+        { label: "Feedback & Ratings", path: "/dashboard/feedbacks" },
         { label: "Notifications", path: "/dashboard/notifications" },
         { label: "Inquiries", path: "/dashboard/inquiries" },
       ],
