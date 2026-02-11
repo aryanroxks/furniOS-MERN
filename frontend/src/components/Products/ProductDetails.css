@@ -22,21 +22,17 @@
   @apply w-16 aspect-[4/5] object-contain border rounded cursor-pointer bg-white;
 }
 
-
 .thumbnail.active {
   @apply border-black;
 }
 
 .main-image {
-  @apply relative bg-[#f6f8f4] rounded-xl w-full;
-  aspect-ratio: 4 / 5;
+  @apply relative bg-[#f6f8f4] rounded-xl w-full aspect-[4/5];
 }
-
 
 .main-media {
   @apply w-full h-full object-contain;
 }
-
 
 .badge {
   @apply absolute top-4 left-4 text-xs bg-white px-3 py-1 rounded-full font-medium;
@@ -85,12 +81,10 @@
   @apply bg-white rounded-2xl p-10 space-y-8 shadow-sm;
 }
 
-/* TITLE */
 .title {
   @apply text-4xl font-serif leading-tight;
 }
 
-/* PRICE */
 .price-row {
   @apply flex items-center gap-3;
 }
@@ -99,18 +93,21 @@
   @apply text-3xl font-semibold;
 }
 
-/* DIVIDER */
 .pdp-details::after {
   content: "";
   @apply block h-px bg-gray-200 my-6;
 }
 
 /* ================= CART ================= */
-.cart-row {
-  @apply flex items-center gap-5 mt-2;
-}
 
+/* CART ROW (STACKED) */
+.cart-row {
+  @apply !flex !flex-col !items-start gap-4 mt-2;
+}
 /* QUANTITY */
+.qty-section {
+  @apply flex flex-col gap-2;
+}
 .qty {
   @apply flex items-center border rounded-lg overflow-hidden h-12;
 }
@@ -123,22 +120,27 @@
   @apply w-14 text-center outline-none text-base;
 }
 
+/* ACTIONS: BELOW QTY */
+.cart-actions {
+  @apply flex items-center gap-4 mt-1;
+}
+
 /* ADD TO CART */
 .add-cart {
-  @apply flex-1 bg-black text-white py-3 rounded-full text-sm font-semibold tracking-wide hover:bg-gray-900;
+  @apply w-[260px] bg-black text-white py-3 rounded-full text-sm font-semibold tracking-wide hover:bg-gray-900;
 }
 
 /* WISHLIST */
 .wishlist {
-  @apply w-12 h-12 border rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-100;
-}
+  @apply w-12 h-12 border rounded-full flex items-center justify-center hover:bg-gray-100;
+} 
 
 /* ================= PLACE ORDER ================= */
 .place-order {
-  @apply w-full bg-[#3f2c4f] text-white py-4 rounded-full text-lg font-semibold tracking-wide hover:opacity-95;
+  @apply w-fit p-3 bg-[#24a0ed] text-white py-4 rounded-full text-lg font-semibold tracking-wide hover:opacity-95;
 }
 
-/* OFFER PRICE */
+/* ================= PRICING ================= */
 .original-price {
   @apply text-sm text-gray-400 line-through ml-2;
 }
@@ -147,93 +149,72 @@
   @apply text-xs font-semibold text-green-600 mt-1 inline-block;
 }
 
-
+/* ================= FEEDBACK ================= */
 .feedback-box {
-  margin-top: 24px;
-  padding-top: 16px;
-  border-top: 1px solid #eee;
+  @apply mt-6 pt-4 border-t border-gray-200;
 }
 
 .rating-summary {
-  margin-bottom: 12px;
+  @apply mb-3;
 }
 
 .avg-rating {
-  font-size: 18px;
-  font-weight: 600;
+  @apply text-lg font-semibold;
 }
 
 .feedback-item {
-  margin-bottom: 12px;
+  @apply mb-3;
 }
 
 .feedback-header {
-  display: flex;
-  justify-content: space-between;
+  @apply flex justify-between;
 }
 
 .verified {
-  font-size: 12px;
-  color: green;
+  @apply text-xs text-green-600;
 }
 
 .add-feedback textarea {
-  width: 100%;
-  margin-top: 8px;
-  padding: 8px;
-  resize: none;
+  @apply w-full mt-2 p-2 resize-none border rounded;
 }
 
 .stars {
-  cursor: pointer;
+  @apply cursor-pointer;
 }
 
 .star {
-  font-size: 22px;
-  color: #ccc;
+  @apply text-[22px] text-gray-300;
 }
 
 .star.active {
-  color: gold;
+  @apply text-yellow-400;
 }
 
 .error {
-  color: red;
-  font-size: 13px;
+  @apply text-red-600 text-sm;
 }
 
-
 .feedback-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
+  @apply flex gap-2 mt-2;
 }
 
 .feedback-actions .danger {
-  color: red;
+  @apply text-red-600;
 }
 
 .feedback-actions .muted {
-  opacity: 0.6;
+  @apply opacity-60;
 }
 
-
+/* ================= ADMIN REPLY ================= */
 .admin-reply {
-  margin-top: 10px;
-  padding: 10px 12px;
-  background-color: #f8f9fb;
-  border-left: 4px solid #4f46e5;
-  border-radius: 4px;
+  @apply mt-3 p-3 bg-[#f8f9fb] border-l-4 border-indigo-600 rounded;
 }
 
 .admin-label {
-  display: block;
-  font-size: 13px;
-  color: #4f46e5;
-  margin-bottom: 4px;
+  @apply block text-sm text-indigo-600 mb-1;
 }
 
 .admin-reply-text {
-  font-size: 14px;
-  color: #444;
+  @apply text-sm text-gray-700;
 }

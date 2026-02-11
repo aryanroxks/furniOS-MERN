@@ -1,51 +1,55 @@
+import { useNavigate } from "react-router-dom";
 const WishlistItem = ({ item, onRemove, onAddToCart, adding }) => {
+const navigate = useNavigate();
+
   return (
-    <div className="grid grid-cols-[40px_90px_1fr_120px_140px_160px] items-center gap-4 border-b py-6">
+    <div className="grid grid-cols-[40px_100px_1fr_120px_140px_170px] items-center gap-4 py-8 transition hover:bg-gray-50/60">
       
       {/* Remove */}
       <button
         onClick={() => onRemove(item._id)}
-        className="text-xl text-gray-400 hover:text-black"
+        className="text-2xl text-gray-300 hover:text-black transition"
+        aria-label="Remove from wishlist"
       >
         ×
       </button>
 
       {/* Image */}
-      <div className="w-20 h-20 bg-gray-100 flex items-center justify-center">
+      <div className="w-24 h-24 rounded-lg bg-gray-100 flex items-center justify-center overflow-hidden" onClick={() => navigate(`/products/${item._id}`)}>
         <img
           src={item.primaryImage?.url}
           alt={item.name}
-          className="max-h-full object-contain"
+          className="h-full object-contain transition-transform duration-300 hover:scale-105"
         />
       </div>
 
       {/* Name */}
-      <p className="text-sm font-medium text-gray-800">
+      <p className="text-sm font-medium text-gray-800 leading-snug max-w-md">
         {item.name}
       </p>
 
       {/* Price */}
-      <p className="text-sm text-gray-600">
+      <p className="text-sm font-medium text-gray-700">
         ₹{item.price.toLocaleString()}
       </p>
 
       {/* Stock */}
-      <p className="text-sm text-green-600">
+      {/* <span className="text-xs font-semibold text-green-700 bg-green-50 px-3 py-1 rounded-full w-fit">
         In Stock
-      </p>
+      </span> */}
 
       {/* Action */}
       <button
         onClick={() => onAddToCart(item._id)}
         disabled={adding}
         className={`
-          border border-black px-5 py-2 text-xs uppercase tracking-wide transition
+          px-6 py-2.5 text-xs font-semibold uppercase tracking-widest border rounded-md transition
           ${adding
             ? "opacity-50 cursor-not-allowed"
-            : "hover:bg-black hover:text-white"}
+            : "border-black hover:bg-black hover:text-white"}
         `}
       >
-        {adding ? "Adding..." : "Add to Cart"}
+        {adding ? "Adding…" : "Add to Cart"}
       </button>
     </div>
   );

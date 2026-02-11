@@ -9,6 +9,7 @@ const CartPage = () => {
   const [loading, setLoading] = useState(true);
   const [isWholesaleUser, setWholesaler] = useState(false);
   const [gstNumber, setGstNumber] = useState("");
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
@@ -37,10 +38,19 @@ const CartPage = () => {
   /* ================= INCREASE ================= */
   const increaseQty = async (productId) => {
     try {
-      await api.post("/carts/add", { productId });
+      const res = await api.post("/carts/add", { productId });
+      console.log(res.data.message);
       await fetchCart(); // 🔐 always refetch
+      setError(""); // clear any previous error on success
+
+
     } catch (err) {
       console.error("Increase qty failed", err);
+
+      const message =
+        err?.res?.data?.message ||
+        "You can add a maximum of 5 quantities of this product!";
+      setError(message);
     }
   };
 
@@ -87,18 +97,39 @@ const CartPage = () => {
 
   /* ================= UI STATES ================= */
   if (loading) {
-    return <p className="p-6">Loading cart...</p>;
+    return (
+      <h1 className="p-6 text-center text-3xl font-bold">
+        Loading cart...
+      </h1>
+    );
   }
 
   if (!cartItems.length) {
-    return <p className="p-6">Your cart is empty.</p>;
+    return (
+      <h1 className="p-6 text-center text-3xl font-bold">
+        Your cart is empty.
+      </h1>
+    );
   }
+
 
   /* ================= RENDER ================= */
   return (
     <div className="cart-wrapper grid-cols-1 lg:grid-cols-3">
       {/* LEFT */}
       <div className="cart-left lg:col-span-2">
+        {error && (
+          <div className="cart-error p-3 mb-4 bg-red-50 text-red-800 rounded flex justify-between items-center">
+            <span>{error}</span>
+            <button
+              onClick={() => setError("")}
+              aria-label="Dismiss error"
+              className="ml-4 font-bold"
+            >
+              ×
+            </button>
+          </div>
+        )}
         <h2 className="cart-title">Shopping cart</h2>
 
         <div className="cart-header">

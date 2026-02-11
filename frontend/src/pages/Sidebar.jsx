@@ -44,7 +44,6 @@ export default function Sidebar() {
       title: "Inventory & Production",
       icon: Layers,
       children: [
-        { label: "Stock", path: "/dashboard/stock" },
         { label: "Raw Materials", path: "/dashboard/raw-materials" },
         { label: "Unit Of Measurements", path: "/dashboard/unit-of-measurements" },
         { label: "Production", path: "/dashboard/productions" },
@@ -67,7 +66,6 @@ export default function Sidebar() {
       children: [
         { label: "Orders", path: "/dashboard/orders" },
         { label: "Returns", path: "/dashboard/returns" },
-        { label: "Cancellations", path: "/dashboard/cancellations" },
       ],
     },
     {
@@ -80,7 +78,7 @@ export default function Sidebar() {
       icon: Wallet,
       children: [
         { label: "Payments", path: "/dashboard/payments" },
-        { label: "Reports", path: "/dashboard/report" },
+        { label: "Reports", path: "/dashboard/reports" },
       ],
     },
     {
@@ -92,11 +90,7 @@ export default function Sidebar() {
         { label: "Inquiries", path: "/dashboard/inquiries" },
       ],
     },
-    {
-      title: "Settings",
-      icon: Settings,
-      children: [{ label: "Company Details", path: "/dashboard/company-details" }],
-    },
+    
   ];
 
   return (

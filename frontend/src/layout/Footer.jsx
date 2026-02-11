@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="bg-black text-white py-10 px-8 flex flex-col md:flex-row justify-between font-sans">
+<footer className="mt-auto bg-black text-white py-10 px-8 flex flex-col md:flex-row justify-between font-sans">
       {/* About Section */}
       <div className="flex-1 max-w-[30%] mb-8 md:mb-0">
         <h3 className="text-xl font-semibold mb-4">About SkiChairz</h3>

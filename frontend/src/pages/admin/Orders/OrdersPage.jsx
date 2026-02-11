@@ -39,6 +39,22 @@ export default function OrdersPage() {
     fetchOrders();
   }, [page, filters]);
 
+const downloadOrdersReport = () => {
+  const params = new URLSearchParams({
+    reportType: "ORDER",
+    ...(filters.status && { status: filters.status }),
+    ...(filters.deliveryAssigned !== "" && {
+      deliveryAssigned: filters.deliveryAssigned,
+    }),
+  });
+
+  const url = `${import.meta.env.VITE_API_BASE_URL}/reports/pdf?${params.toString()}`;
+  window.open(url, "_blank", "noopener,noreferrer");
+};
+
+
+
+
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
@@ -47,8 +63,17 @@ export default function OrdersPage() {
           Orders Management
         </h1>
       </div>
+      
 
       {/* Filters */}
+      <button
+  onClick={downloadOrdersReport}
+  disabled={orders.length === 0}
+  className="border px-4 py-2 rounded-md bg-white hover:bg-gray-50 text-sm disabled:opacity-50"
+>
+  Download Orders Report
+</button>
+
       <OrderFilters filters={filters} setFilters={setFilters} />
 
       {/* Orders Table */}

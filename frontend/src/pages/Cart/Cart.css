@@ -1,9 +1,10 @@
 @reference "tailwindcss";
 
 
-.p-6{
-    @apply text-center ;
+.center-text {
+  @apply text-center;
 }
+
 .cart-wrapper {
   @apply max-w-[90%] mx-auto py-12 grid gap-12;
 }

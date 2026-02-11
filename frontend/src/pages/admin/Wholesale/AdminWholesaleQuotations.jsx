@@ -63,6 +63,21 @@ const AdminWholesaleQuotations = () => {
     }
   };
 
+
+  const downloadWholesaleQuotationsPDF = () => {
+  const params = new URLSearchParams({
+    reportType: "WHOLESALE_QUOTATION",
+    ...(status && { status }), // only if you add filter later
+  });
+
+  window.open(
+    `${import.meta.env.VITE_API_BASE_URL}/reports/pdf?${params.toString()}`,
+    "_blank",
+    "noopener,noreferrer"
+  );
+};
+
+
   /* ================= UI STATES ================= */
   if (loading) {
     return <p className="p-6">Loading wholesale quotations...</p>;
@@ -89,6 +104,14 @@ const AdminWholesaleQuotations = () => {
           <option value="REJECTED">Rejected</option>
           <option value="ORDER_CREATED">Order Created</option>
         </select>
+        <button
+  onClick={downloadWholesaleQuotationsPDF}
+  disabled={quotations.length === 0}
+  className="border px-4 py-2 rounded-md bg-white hover:bg-gray-50 text-sm disabled:opacity-50"
+>
+  Download Quotations PDF
+</button>
+
       </div>
 
       {/* TABLE */}

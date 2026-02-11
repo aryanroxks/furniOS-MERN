@@ -108,6 +108,19 @@ export default function PurchaseList() {
     }
   };
 
+  const downloadPDF = () => {
+    const params = new URLSearchParams({
+      ...(filters.status && { status: filters.status }),
+      ...(filters.vendorId && { vendorId: filters.vendorId }),
+      ...(filters.startDate && { startDate: filters.startDate }),
+      ...(filters.endDate && { endDate: filters.endDate }),
+    });
+
+    const url = `${import.meta.env.VITE_API_BASE_URL}/purchases/pdf?${params.toString()}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+
   return (
     <div className="p-6 space-y-6 bg-gray-50 min-h-screen">
 
@@ -120,13 +133,24 @@ export default function PurchaseList() {
           </p>
         </div>
 
-        <button
-          onClick={() => navigate("/dashboard/purchases/create")}
-          className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
-        >
-          <Plus size={16} />
-          Add Purchase
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => navigate("/dashboard/purchases/create")}
+            className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+          >
+            <Plus size={16} />
+            Add Purchase
+          </button>
+
+          <button
+            onClick={downloadPDF}
+            disabled={loading || purchases.length === 0}
+            className="px-4 py-2 rounded-md border bg-white hover:bg-gray-50 disabled:opacity-50"
+          >
+            Download PDF
+          </button>
+        </div>
+
       </div>
 
       {/* ===== Filters ===== */}
@@ -288,20 +312,20 @@ export default function PurchaseList() {
 
       {/* ===== Modals ===== */}
       {receiveId && (
-  <ReceivePurchaseModal
-    loading={processing}
-    onCancel={() => setReceiveId(null)}
-    onConfirm={handleReceive}
-  />
-)}
+        <ReceivePurchaseModal
+          loading={processing}
+          onCancel={() => setReceiveId(null)}
+          onConfirm={handleReceive}
+        />
+      )}
 
-{cancelId && (
-  <CancelPurchaseModal
-    loading={processing}
-    onCancel={() => setCancelId(null)}
-    onConfirm={handleCancel}
-  />
-)}
+      {cancelId && (
+        <CancelPurchaseModal
+          loading={processing}
+          onCancel={() => setCancelId(null)}
+          onConfirm={handleCancel}
+        />
+      )}
 
 
       {deleteId && (

@@ -64,6 +64,18 @@ export default function UsersList() {
     }
   };
 
+const downloadUsersPDF = () => {
+  const params = new URLSearchParams({
+    ...(filters.search && { search: filters.search }),
+    ...(filters.role && { role: filters.role }),
+  });
+
+  const url = `${import.meta.env.VITE_API_BASE_URL}/users/pdf?${params.toString()}`;
+  window.open(url, "_blank", "noopener,noreferrer");
+};
+
+
+
   return (
     <div className="min-h-screen bg-gray-50 p-6 space-y-6">
       {/* ===== Page Header ===== */}
@@ -82,6 +94,16 @@ export default function UsersList() {
           <Plus size={16} />
           Add User
         </button>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={downloadUsersPDF}
+            className="border px-4 py-2 rounded-md bg-white hover:bg-gray-50"
+          >
+            Download PDF
+          </button>
+        </div>
+
       </div>
 
       {/* ===== Filters ===== */}

@@ -17,11 +17,17 @@ export default function ProductDetails() {
   const [myFeedbackExists, setMyFeedbackExists] = useState(false);
   const [myFeedback, setMyFeedback] = useState(null);
   const [editingFeedback, setEditingFeedback] = useState(false);
-
+  const [cartError, setCartError] = useState("");
   const [rating, setRating] = useState(0);
   const [description, setDescription] = useState("");
   const [feedbackLoading, setFeedbackLoading] = useState(false);
   const [feedbackError, setFeedbackError] = useState("");
+
+  const MAX_QTY = 5;
+
+
+  const [cartQty, setCartQty] = useState(0);
+  const [qtyError, setQtyError] = useState("");
 
 
   const [product, setProduct] = useState(null);
@@ -303,28 +309,46 @@ export default function ProductDetails() {
 
   useEffect(() => {
     const checkCart = async () => {
-
       try {
-
-        const res = await api.get("/carts")
+        const res = await api.get("/carts");
         const cartArray = res.data.data || [];
         const products = cartArray[0]?.products || [];
 
-        const exists = products.some(
-          (p) => p._id === product._id
+        const existingProduct = products.find(
+          (p) => p._id === product?._id
         );
-        setCart(exists)
 
-      } catch (error) {
+        if (existingProduct) {
+          setCart(true);
+          setCartQty(existingProduct.qty);
+        } else {
+          setCart(false);
+          setCartQty(0);
+        }
+      } catch {
         setCart(false);
+        setCartQty(0);
       }
+    };
+
+    if (product?._id) checkCart();
+  }, [product?._id]);
 
 
+
+
+  const allowedQty = cartQty > 0 ? MAX_QTY - cartQty : MAX_QTY;
+
+
+  useEffect(() => {
+    if (qty > allowedQty && allowedQty > 0) {
+      setQty(allowedQty);
     }
-    checkCart();
-  }, [product?._id])
 
-
+    if (allowedQty === 0) {
+      setQty(1);
+    }
+  }, [allowedQty]);
 
 
 
@@ -344,24 +368,31 @@ export default function ProductDetails() {
 
 
 
-
   const handleCart = async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (cartLoading) return;
+    if (qty > allowedQty) {
+      setQtyError(`You can only add ${allowedQty} more item(s)`);
+      return;
+    }
 
+    if (cartLoading) return;
     setCartLoading(true);
+    setCartError(""); // Clear previous errors
 
     try {
       await api.post("/carts/add", {
         productId: product._id,
         qty,
       });
-      setCart(true);
-    } catch (err) {
-      setCart(false);
 
+      setCart(true);
+      setCartQty((prev) => prev + qty);
+      setQty(1);
+      setQtyError("");
+      setCartError(""); // Clear on success
+    } catch (err) {
       if (err.response?.status === 401) {
         redirectToLoginWithIntent({
           type: "ADD_TO_CART",
@@ -369,12 +400,18 @@ export default function ProductDetails() {
           qty,
         });
       } else {
+        // Extract error message from backend
+        const message =
+          err?.response?.data?.message ||
+          "Failed to add item to cart";
+        setCartError(message);
         console.error("Cart error", err);
       }
     } finally {
       setCartLoading(false);
     }
   };
+
 
 
 
@@ -496,42 +533,75 @@ export default function ProductDetails() {
 
 
         <div className="cart-row">
-          <div className="qty">
-            <button
-              onClick={() => setQty(Math.max(1, qty - 1))}
-              disabled={qty === 1}
-            >
-              −
-            </button>
+          {/* LEFT: Qty */}
+          <div className="qty-section">
+            <div className="qty">
+              <button
+                onClick={() => setQty((prev) => Math.max(1, prev - 1))}
+                disabled={qty === 1}
+              >
+                −
+              </button>
 
-            <input
-              type="number"
-              value={qty}
-              min={1}
-              readOnly
-            />
+              <input type="number" value={qty} readOnly />
 
-            <button onClick={() => setQty(qty + 1)}>+</button>
+              <button
+                onClick={() => {
+                  setQty((prev) => Math.min(prev + 1, allowedQty));
+                }}
+                disabled={qty >= allowedQty || allowedQty === 0}
+              >
+                +
+              </button>
+            </div>
+
+            <p className="qty-limit">
+              You can select up to <strong>{allowedQty}</strong> quantity
+            </p>
+
+            {qtyError && <p className="error">{qtyError}</p>}
           </div>
 
+          {/* RIGHT: Buttons stacked */}
+          <div className="cart-actions">
+            <button
+              className="add-cart"
+              onClick={handleCart}
+              disabled={cartLoading || allowedQty === 0}
+            >
+              ADD TO CART
+            </button>
 
-          <button className="add-cart" onClick={handleCart} disabled={cartLoading}>ADD TO CART</button>
-
-          <button
-            className="wishlist"
-            onClick={handleWishlist}
-            disabled={wishlistLoading}
-          >
-            <Heart
-              size={18}
-              className={
-                wishlisted
-                  ? "fill-red-500 text-red-500"
-                  : "text-gray-700"
-              }
-            />
-          </button>
+            <button
+              className="wishlist"
+              onClick={handleWishlist}
+              disabled={wishlistLoading}
+            >
+              <Heart
+                size={18}
+                className={
+                  wishlisted
+                    ? "fill-red-500 text-red-500"
+                    : "text-gray-700"
+                }
+              />
+            </button>
+          </div>
         </div>
+
+        {/* Cart error BELOW row */}
+        {cartError && (
+          <div className="cart-error p-3 mt-3 bg-red-50 text-red-800 rounded flex justify-between items-center">
+            <span>{cartError}</span>
+            <button
+              onClick={() => setCartError("")}
+              className="font-bold"
+            >
+              ×
+            </button>
+          </div>
+        )}
+
 
         <button className="place-order" onClick={handlePlaceOrder}>
           PLACE ORDER

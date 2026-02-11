@@ -8,35 +8,47 @@ const Filters = () => {
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const activeSubcategory = searchParams.get("subcategory");
+
+  // 🔥 MULTIPLE subcategories from URL
+  const activeSubcategories = searchParams.get("subcategory")
+    ? searchParams.get("subcategory").split(",")
+    : [];
 
   /* ============================
      Fetch Categories
      ============================ */
   useEffect(() => {
     const fetchCategories = async () => {
-      const res = await api.get("/categories");
-      setCategories(res.data.data || []);
+      try {
+        const res = await api.get("/categories");
+        setCategories(res.data.data || []);
+      } catch (err) {
+        console.error("Failed to fetch categories", err);
+      }
     };
 
     fetchCategories();
   }, []);
 
   /* ============================
-     Fetch Subcategories (once)
+     Fetch Subcategories (once per category)
      ============================ */
   useEffect(() => {
     const fetchAllSubCategories = async () => {
       for (const cat of categories) {
         if (!subCategories[cat._id]) {
-          const res = await api.get(
-            `/categories/${cat._id}/subcategories`
-          );
+          try {
+            const res = await api.get(
+              `/categories/${cat._id}/subcategories`
+            );
 
-          setSubCategories((prev) => ({
-            ...prev,
-            [cat._id]: res.data.data || [],
-          }));
+            setSubCategories((prev) => ({
+              ...prev,
+              [cat._id]: res.data.data || [],
+            }));
+          } catch (err) {
+            console.error("Failed to fetch subcategories", err);
+          }
         }
       }
     };
@@ -44,22 +56,36 @@ const Filters = () => {
     if (categories.length) fetchAllSubCategories();
   }, [categories]);
 
-const handleSubcategoryClick = (subId) => {
-  if (activeSubcategory === subId) {
-    // UNCHECK → remove filter
-    navigate("/products");
-  } else {
-    // CHECK → apply filter
-    navigate(`/products?subcategory=${subId}`);
-  }
-};
+  /* ============================
+     Handle Subcategory Toggle
+     ============================ */
+  const handleSubcategoryClick = (subId) => {
+    let updatedSubcategories = [...activeSubcategories];
 
+    if (updatedSubcategories.includes(subId)) {
+      // ❌ Remove
+      updatedSubcategories = updatedSubcategories.filter(
+        (id) => id !== subId
+      );
+    } else {
+      // ✅ Add
+      updatedSubcategories.push(subId);
+    }
+
+    if (updatedSubcategories.length === 0) {
+      navigate("/products");
+    } else {
+      navigate(
+        `/products?subcategory=${updatedSubcategories.join(",")}`
+      );
+    }
+  };
 
   return (
     <div className="w-full">
       <h3 className="text-lg font-semibold mb-6">Filters by</h3>
 
-      {/* CATEGORY */}
+      {/* CATEGORY LIST */}
       <div className="space-y-6">
         {categories.map((cat) => (
           <div key={cat._id}>
@@ -75,7 +101,7 @@ const handleSubcategoryClick = (subId) => {
                 >
                   <input
                     type="checkbox"
-                    checked={activeSubcategory === sub._id}
+                    checked={activeSubcategories.includes(sub._id)}
                     onChange={() => handleSubcategoryClick(sub._id)}
                     className="w-5 h-5 accent-black cursor-pointer"
                   />

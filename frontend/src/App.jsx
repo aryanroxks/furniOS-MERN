@@ -122,6 +122,8 @@ import AdminFeedbacks from "./pages/admin/Feedbacks/AdminFeedbacks.jsx";
 import MyNotifications from "./pages/MyNotifications.jsx";
 import AdminNotifications from "./pages/admin/Notifications/AdminNotifications.jsx";
 import CreateNotification from "./pages/admin/Notifications/CreateNotification.jsx";
+import Reports from "./pages/admin/Reports/Reports.jsx";
+import AdminPayments from "./pages/Payment/AdminPayments.jsx";
 
 
 
@@ -136,6 +138,7 @@ const Settings = () => <h1>Settings Page</h1>;
 export default function App() {
   return (
     <Router>
+        <div className="flex min-h-screen flex-col">
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<><Navbar /><Home /> </>} />
@@ -147,7 +150,7 @@ export default function App() {
         <Route path="/adminpage" element={<><Navbar /><AdminPage /><Footer /></>} />
         <Route path="/products/:id" element={<><Navbar /><ProductDetails /><Footer /></>} />
         <Route path="/wishlist" element={<><Navbar /><Wishlist /><Footer /></>} />
-        <Route path="/cart" element={<><Navbar /><Cart /></>} />
+        <Route path="/cart" element={<><Navbar /><Cart /><Footer /></>} />
 
 
         {/* Protected Routes */}
@@ -158,7 +161,7 @@ export default function App() {
           <Route path="/wholesale/checkout/:quotationID" element={<><Navbar /><WholesaleCheckout /><Footer /></>} />
           <Route path="/payment" element={<><Navbar /><Payment /><Footer /></>} />
           <Route path="/order-success" element={<><Navbar /><OrderSuccess /><Footer /></>} />
-          <Route path="/notifications" element={<><Navbar /><MyNotifications /><Footer /></>} />
+          <Route path="/notifications" element={<><Navbar /><MyNotifications /></>} />
           <Route path="/profile" element={<><Navbar /><Profile /><Footer /></>}>
             <Route index element={<AccountInfo />} />
             <Route path="addresses" element={<Addresses />} />
@@ -267,8 +270,8 @@ export default function App() {
 
 
 
-            <Route path="apayments" element={<APayments />} />
-            <Route path="areport" element={<AReport />} />
+            <Route path="payments" element={<AdminPayments />} />
+            <Route path="reports" element={<Reports />} />
 
 
             <Route path="feedbacks" element={<AdminFeedbacks />} />
@@ -285,6 +288,7 @@ export default function App() {
           </Route>
         </Route>
       </Routes>
+      </div>
     </Router>
   );
 }

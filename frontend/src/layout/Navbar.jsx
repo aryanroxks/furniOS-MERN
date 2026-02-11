@@ -117,8 +117,8 @@ export default function Navbar() {
   };
 
   return (
-    <header className="w-full bg-[#B68C5A] text-black">
-      <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between text-lg">
+    <header className="w-full bg-slate-900 text-slate-100 shadow-md">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between text-[15px] font-medium">
 
         {/* Logo */}
         <Link to="/" className="flex items-center">
@@ -127,31 +127,31 @@ export default function Navbar() {
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8">
-          <Link to="/" className="hover:text-gray-300 transition">Home</Link>
-          <Link to="/about" className="hover:text-white transition">About Us</Link>
-          <Link to="/contact" className="hover:text-white transition">Contact Us</Link>
+          <Link to="/" className="hover:text-amber-400 transition-colors">Home</Link>
+          <Link to="/about" className="hover:text-amber-400 transition-colors">About Us</Link>
+          <Link to="/contact" className="hover:text-amber-400 transition-colors">Contact Us</Link>
 
           {/* Products Dropdown */}
           <div className="relative group">
-            <Link to="/products" className="hover:text-white transition">
+            <Link to="/products" className="hover:text-amber-400 transition-colors">
               Products
             </Link>
 
             <div className="absolute left-0 top-full hidden group-hover:block z-50">
-              <div className="pt-3">
-                <div className="bg-white text-black rounded-lg shadow-lg w-72 p-4">
+              <div className="pt-4">
+                <div className="bg-white text-slate-800 rounded-xl shadow-xl w-64 p-5">
                   {categories.map((cat) => (
                     <div
                       key={cat._id}
                       className="mb-4 last:mb-0 border-b last:border-b-0 pb-3"
                       onMouseEnter={() => fetchSubCategories(cat._id)}
                     >
-                      <p className="font-semibold text-[#100F57]">
-                        {cat.name}
+                      <p className="font-semibold text-slate-900 tracking-wide text-sm">
+                        {cat.name.toUpperCase()}
                       </p>
 
                       {loadingCategory === cat._id && (
-                        <p className="text-xs text-gray-400 mt-2">Loading...</p>
+                        <p className="text-xs text-slate-400 mt-2">Loading...</p>
                       )}
 
                       {subCategories[cat._id]?.length > 0 && (
@@ -160,9 +160,9 @@ export default function Navbar() {
                             <li key={sub._id}>
                               <Link
                                 to={`/products?subcategory=${sub._id}`}
-                                className="text-sm text-gray-600 hover:text-[#100F57]"
+                                className="text-sm text-slate-600 hover:text-amber-600 transition-colors"
                               >
-                                {sub.name}
+                                {sub.name.charAt(0).toUpperCase() + sub.name.slice(1)}
                               </Link>
                             </li>
                           ))}
@@ -177,28 +177,28 @@ export default function Navbar() {
         </nav>
 
         {/* Desktop Right */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-3">
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search products..."
-            className="px-4 py-2 rounded-lg outline-none text-sm bg-white text-black w-48"
+            className="px-4 py-2 rounded-lg text-sm bg-slate-800 text-white placeholder-slate-400 outline-none focus:ring-2 focus:ring-amber-400 w-48"
           />
 
-          <Link to="/wishlist" className="p-2 bg-white rounded-lg">
+          <Link to="/wishlist" className="p-2 bg-slate-800 rounded-lg hover:bg-slate-700 transition">
             <Heart size={20} />
           </Link>
 
-          <Link to="/cart" className="p-2 bg-white rounded-lg">
+          <Link to="/cart" className="p-2 bg-slate-800 rounded-lg hover:bg-slate-700 transition">
             <ShoppingCart size={20} />
           </Link>
 
-          {/* 🔔 Notifications */}
+          {/* Notifications */}
           {isLoggedIn && (
             <button
               onClick={() => navigate("/notifications")}
-              className="relative p-2 bg-white rounded-lg"
+              className="relative p-2 bg-slate-800 rounded-lg hover:bg-slate-700 transition"
               title="Notifications"
             >
               <Bell size={20} />
@@ -213,21 +213,27 @@ export default function Navbar() {
           {!authLoading && (
             !isLoggedIn ? (
               <>
-                <Link to="/login" className="px-5 py-2 bg-white rounded-lg font-semibold">
+                <Link
+                  to="/login"
+                  className="px-5 py-2 bg-amber-500 text-black rounded-lg font-semibold hover:bg-amber-400 transition"
+                >
                   Login
                 </Link>
-                <Link to="/register" className="px-5 py-2 bg-white rounded-lg font-semibold">
+                <Link
+                  to="/register"
+                  className="px-5 py-2 bg-slate-800 rounded-lg font-semibold hover:bg-slate-700 transition"
+                >
                   Register
                 </Link>
               </>
             ) : (
               <>
-                <Link to="/profile" className="p-2 bg-white rounded-lg">
+                <Link to="/profile" className="p-2 bg-slate-800 rounded-lg hover:bg-slate-700 transition">
                   <User />
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="px-5 py-2 bg-white rounded-lg font-semibold"
+                  className="px-5 py-2 bg-slate-800 rounded-lg font-semibold hover:bg-slate-700 transition"
                 >
                   Logout
                 </button>
@@ -244,8 +250,8 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden bg-[#B68C5A] border-t border-black/20">
-          <div className="flex flex-col gap-4 px-6 py-6 text-lg">
+        <div className="md:hidden bg-slate-900 border-t border-white/10">
+          <div className="flex flex-col gap-4 px-6 py-6 text-base">
             <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
             <Link to="/about" onClick={() => setMenuOpen(false)}>About</Link>
             <Link to="/contact" onClick={() => setMenuOpen(false)}>Contact</Link>
@@ -270,14 +276,14 @@ export default function Navbar() {
                   <Link
                     to="/login"
                     onClick={() => setMenuOpen(false)}
-                    className="mt-2 w-full text-center px-5 py-2 bg-white rounded-lg font-semibold"
+                    className="mt-2 w-full text-center px-5 py-2 bg-amber-500 text-black rounded-lg font-semibold"
                   >
                     Login
                   </Link>
                   <Link
                     to="/register"
                     onClick={() => setMenuOpen(false)}
-                    className="w-full text-center px-5 py-2 bg-white rounded-lg font-semibold"
+                    className="w-full text-center px-5 py-2 bg-slate-800 rounded-lg font-semibold"
                   >
                     Register
                   </Link>
@@ -288,7 +294,7 @@ export default function Navbar() {
                     handleLogout();
                     setMenuOpen(false);
                   }}
-                  className="w-full text-center px-5 py-2 bg-white rounded-lg font-semibold"
+                  className="w-full text-center px-5 py-2 bg-slate-800 rounded-lg font-semibold"
                 >
                   Logout
                 </button>

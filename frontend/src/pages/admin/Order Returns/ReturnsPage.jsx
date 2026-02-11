@@ -44,6 +44,21 @@ export default function ReturnsPage() {
     fetchReturns();
   }, [statusFilter]);
 
+
+  const downloadOrderReturnsReport = () => {
+  const params = new URLSearchParams({
+    reportType: "ORDER_RETURN",
+    ...(status && { status }),
+  });
+
+  window.open(
+    `${import.meta.env.VITE_API_BASE_URL}/reports/pdf?${params.toString()}`,
+    "_blank",
+    "noopener,noreferrer"
+  );
+};
+
+
   /* ======================
      UI
   ====================== */
@@ -67,6 +82,15 @@ export default function ReturnsPage() {
           <option value="RECEIVED">Received</option>
           <option value="REFUNDED">Refunded</option>
         </select>
+
+        <button
+  onClick={downloadOrderReturnsReport}
+  disabled={returns.length === 0}
+  className="border px-4 py-2 rounded-md bg-white hover:bg-gray-50 text-sm disabled:opacity-50"
+>
+  Download Returns Report
+</button>
+
       </div>
 
       {/* TABLE */}

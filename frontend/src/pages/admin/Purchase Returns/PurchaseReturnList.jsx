@@ -74,6 +74,8 @@ export default function PurchaseReturnList() {
     fetchReturns();
   }, [filters, page]);
 
+
+
   /* ---------------- ACTIONS ---------------- */
   const handleComplete = async () => {
     try {
@@ -101,6 +103,20 @@ export default function PurchaseReturnList() {
     }
   };
 
+  const downloadPDF = () => {
+    const params = new URLSearchParams({
+      ...(filters.status && { status: filters.status }),
+      ...(filters.vendorID && { vendorID: filters.vendorID }),
+      ...(filters.fromDate && { fromDate: filters.fromDate }),
+      ...(filters.toDate && { toDate: filters.toDate }),
+    });
+
+    const url = `${import.meta.env.VITE_API_BASE_URL}/purchase-returns/pdf?${params.toString()}`;
+
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+
   /* ---------------- UI ---------------- */
   return (
     <div className="p-6 space-y-6 bg-gray-50 min-h-screen">
@@ -113,12 +129,24 @@ export default function PurchaseReturnList() {
           </p>
         </div>
 
-        <button
-          onClick={() => navigate("/dashboard/purchase-returns/create")}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-md"
-        >
-          + Create Return
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={() => navigate("/dashboard/purchase-returns/create")}
+            className="bg-indigo-600 text-white px-4 py-2 rounded-md"
+          >
+            + Create Return
+          </button>
+
+          <button
+            onClick={downloadPDF}
+            disabled={loading || returns.length === 0}
+            className="border px-4 py-2 rounded-md bg-white hover:bg-gray-50 disabled:opacity-50"
+          >
+            Download PDF
+          </button>
+        </div>
+
+
       </div>
 
       {/* Filters */}

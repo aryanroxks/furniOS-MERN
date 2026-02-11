@@ -34,6 +34,8 @@ const QuotationsList = () => {
     fetchQuotations();
   }, []);
 
+  
+
   /* ================= UI STATES ================= */
   if (loading) {
     return <p className="p-6">Loading quotations...</p>;
